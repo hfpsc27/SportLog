@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace SportLog.Entities.Models;
 
 [Index("Name", IsUnique = true)]
+[Table("Sport")]
 public partial class Sport
 {
     [Key]

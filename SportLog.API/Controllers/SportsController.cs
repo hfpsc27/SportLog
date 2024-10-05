@@ -48,12 +48,16 @@ namespace SportLog.API.Controllers
         // PUT: api/Sports/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSport(int id, Sport sport)
+        public async Task<IActionResult> PutSport(int id, SportDTO sportDTO)
         {
-            if (id != sport.Id)
+            var sport = await _context.Sports.FindAsync(id);
+
+            if (sport == null || id != sport.Id)
             {
                 return BadRequest();
             }
+
+            sport = SportMapping.Map(sportDTO, sport);
 
             _context.Entry(sport).State = EntityState.Modified;
 
@@ -79,7 +83,7 @@ namespace SportLog.API.Controllers
         // POST: api/Sports
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SportDTO>> PostSport(SportDTO sportDTO)
+        public async Task<ActionResult<SportDTO>> PostSport([FromBody] SportDTO sportDTO)
         {
             var sport = SportMapping.Map(sportDTO);
 
