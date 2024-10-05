@@ -1,0 +1,6 @@
+@SportLog.API_HostAddress = http://localhost:5152
+
+GET {{SportLog.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
