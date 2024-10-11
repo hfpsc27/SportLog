@@ -9,9 +9,15 @@ namespace SportLog.API.Data;
 
 public partial class SportLogAppDbContext : DbContext
 {
+
     public SportLogAppDbContext(DbContextOptions<SportLogAppDbContext> options)
         : base(options)
     {
+    }
+
+    public SportLogAppDbContext()
+    {
+
     }
 
     public virtual DbSet<Game> Games { get; set; }

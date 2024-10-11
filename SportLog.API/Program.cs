@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SportLog.API.Data;
+using SportLog.API.Interfaces;
+using SportLog.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<SportLogAppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("SportLogDbContext") ?? throw new InvalidOperationException("Connection string 'SportLogDbContext' not found.")));
 
+builder.Services.AddScoped<ISportRepository, SportRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();

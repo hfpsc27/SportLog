@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SportLog.API.Data;
 using SportLog.Entities.DTOs;
 using SportLog.Entities.Mapping;
 using SportLog.Entities.Models;
+using SportLog.API.Services;
+using SportLog.API.Interfaces;
 
 namespace SportLog.API.Controllers
 {
@@ -16,26 +17,29 @@ namespace SportLog.API.Controllers
     [ApiController]
     public class SportsController : ControllerBase
     {
-        private readonly SportLogAppDbContext _context;
 
-        public SportsController(SportLogAppDbContext context)
+        private readonly ISportRepository sportRepository;
+
+        public SportsController(ISportRepository sportRepository)
         {
-            _context = context;
+            this.sportRepository = sportRepository;
         }
 
         // GET: api/Sports
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sport>>> GetSport()
         {
-            var sports = await _context.Sports.ToListAsync();
-            return Ok(sports);
+            return Ok(await sportRepository.GetAllAsync());
         }
+
 
         // GET: api/Sports/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Sport>> GetSport(int id)
         {
-            var sport = await _context.Sports.FindAsync(id);
+            var sport = await sportRepository.GetByIdAsync(id);
+
+            //var sport = await _context.Sports.FindAsync(id);
 
             if (sport == null)
             {
@@ -45,6 +49,7 @@ namespace SportLog.API.Controllers
             return Ok(sport);
         }
 
+        /*
         // PUT: api/Sports/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -113,5 +118,6 @@ namespace SportLog.API.Controllers
         {
             return _context.Sports.Any(e => e.Id == id);
         }
+        */
     }
 }
